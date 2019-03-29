@@ -1,5 +1,7 @@
 package com.okres.basis.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class OperationMessage extends Message {
 
     private String instrument;
@@ -53,9 +55,35 @@ public class OperationMessage extends Message {
             return this;
         }
 
+        public Builder msgType(String msgType) {
+            operationMessage.setMsgType(msgType);
+            return this;
+        }
+
+
+        public Builder msgId(long msgId) {
+            operationMessage.setMsgId(msgId);
+            return this;
+        }
+
+        public Builder checkSum() {
+            operationMessage.setCheckSum(operationMessage.getMd5());
+            return this;
+        }
+
         public OperationMessage build() {
+            //operationMessage.setCheckSum(operationMessage.getMd5());
             return operationMessage;
         }
+
+
+    }
+
+    private String getMd5() {
+        return DigestUtils.md5Hex(String.valueOf(id)
+                .concat(instrument)
+                .concat(String.valueOf(quantity).
+                        concat(operation)));
     }
 
 

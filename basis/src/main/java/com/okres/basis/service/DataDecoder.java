@@ -2,6 +2,7 @@ package com.okres.basis.service;
 
 import com.okres.basis.model.Message;
 import com.okres.basis.model.AcceptMsg;
+import com.okres.basis.model.OperationMessage;
 import com.okres.basis.model.TypeMsg;
 import com.okres.basis.util.Util;
 import io.netty.buffer.ByteBuf;
@@ -22,6 +23,19 @@ public class DataDecoder extends ReplayingDecoder<Object> {
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             accept(byteBuf, list, message, msgType);
         } else if (isOperation(message)) {
+            OperationMessage operationMsg = new OperationMessage.Builder()
+                    .msgType(message.getMsgType())
+                    .operation(msgType)
+                    .id(byteBuf.readInt())
+                    .instrument(msgType)
+                    .msgId(byteBuf.readLong())
+                    .quantity(byteBuf.readInt())
+                    .price(byteBuf.readInt())
+                    .checkSum()
+                    .build();
+
+            //MD5Creator.createMD5FromObject(String.valueOf(id)
+            // .concat(instrument).concat(String.valueOf(quantity)).concat(messageAction));
 
             //doTransaction();
         }
