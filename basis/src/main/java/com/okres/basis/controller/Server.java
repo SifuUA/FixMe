@@ -48,8 +48,11 @@ public class Server implements Runnable {
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128).
                     childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture cf = sb.bind(serverPort).sync();
+            ChannelFuture cf = sb.
+                    bind(serverPort).sync();
+            cf.channel().closeFuture().sync();
         } catch (InterruptedException e) {
+            logger.error(e);
             e.printStackTrace();
         } finally {
             bossGroup.shutdownGracefully();

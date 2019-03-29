@@ -5,14 +5,14 @@ public class Message {
     private String msgType;
     private long checkSumLength;
     private int msgTypeLength;
-    private long id;
+    private long msgId;
 
     public Message() {
     }
 
-    public Message(String msgType, long id) {
+    public Message(String msgType, long msgId) {
         this.msgType = msgType;
-        this.id = id;
+        this.msgId = msgId;
         this.msgTypeLength = msgType.length();
     }
 
@@ -34,12 +34,12 @@ public class Message {
         this.msgType = msgType;
     }
 
-    public long getId() {
-        return id;
+    public long getMsgId() {
+        return msgId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMsgId(long msgId) {
+        this.msgId = msgId;
     }
 
     public long getCheckSumLength() {
@@ -57,7 +57,7 @@ public class Message {
                 ", msgType='" + msgType + '\'' +
                 ", checkSumLength=" + checkSumLength +
                 ", msgTypeLength=" + msgTypeLength +
-                ", id=" + id +
+                ", msgId=" + msgId +
                 '}';
     }
 }
