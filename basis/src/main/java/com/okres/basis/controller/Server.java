@@ -4,6 +4,7 @@ import com.okres.basis.service.ChanellProvider;
 import com.okres.basis.service.DataDecoder;
 import com.okres.basis.service.CheckConnection;
 import com.okres.basis.service.DataEncoder;
+import com.okres.basis.util.Util;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,13 +12,16 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.log4j.Logger;
 
 public class Server implements Runnable {
-
     private int serverPort;
+    private static Logger logger = Logger.getLogger(Server.class);
+
 
     public Server(int serverPort) {
         this.serverPort = serverPort;
+        Util.loadProp();
     }
 
     @Override
