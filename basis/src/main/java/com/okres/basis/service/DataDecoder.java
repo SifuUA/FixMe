@@ -23,21 +23,7 @@ public class DataDecoder extends ReplayingDecoder<Object> {
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             accept(byteBuf, list, message, msgType);
         } else if (isOperation(message)) {
-            OperationMessage operationMsg = new OperationMessage.Builder()
-                    .msgType(message.getMsgType())
-                    .operation(msgType)
-                    .id(byteBuf.readInt())
-                    .instrument(msgType)
-                    .msgId(byteBuf.readLong())
-                    .quantity(byteBuf.readInt())
-                    .price(byteBuf.readInt())
-                    .checkSum()
-                    .build();
-
-            //MD5Creator.createMD5FromObject(String.valueOf(id)
-            // .concat(instrument).concat(String.valueOf(quantity)).concat(messageAction));
-
-            //doTransaction();
+            doTransaction(byteBuf, list, message, msgType);
         }
     }
 
@@ -53,5 +39,19 @@ public class DataDecoder extends ReplayingDecoder<Object> {
         acceptMsg.setId(byteBuf.readInt());
         acceptMsg.setCheckSum(msgType);
         list.add(acceptMsg);
+    }
+
+    private void doTransaction(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
+        OperationMessage operationMsg = new OperationMessage.Builder()
+                .msgType(message.getMsgType())
+                .operation(msgType)
+                .id(byteBuf.readInt())
+                .instrument(msgType)
+                .msgId(byteBuf.readLong())
+                .quantity(byteBuf.readInt())
+                .price(byteBuf.readInt())
+                .checkSum()
+                .build();
+        list.add(operationMsg);
     }
 }
