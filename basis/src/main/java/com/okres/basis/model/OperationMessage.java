@@ -6,11 +6,9 @@ public class OperationMessage extends Message {
 
     private String instrument;
     private String operation;
-    private int operationLen;
     private int quantity;
     private int price;
     private long id;
-    private int instrumentLen;
 
     public static class Builder {
 
@@ -30,11 +28,6 @@ public class OperationMessage extends Message {
             return this;
         }
 
-        public Builder operationLen(int operationLen) {
-            operationMessage.operationLen = operationLen;
-            return this;
-        }
-
         public Builder quantity(int quantity) {
             operationMessage.quantity = quantity;
             return this;
@@ -47,11 +40,6 @@ public class OperationMessage extends Message {
 
         public Builder id(long id) {
             operationMessage.id = id;
-            return this;
-        }
-
-        public Builder instrumentLen(int instrumentLen) {
-            operationMessage.instrumentLen = instrumentLen;
             return this;
         }
 
@@ -95,10 +83,6 @@ public class OperationMessage extends Message {
         return operation;
     }
 
-    public int getOperationLen() {
-        return operationLen;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -111,20 +95,15 @@ public class OperationMessage extends Message {
         return id;
     }
 
-    public int getInstrumentLen() {
-        return instrumentLen;
-    }
 
     @Override
     public String toString() {
         return "OperationMessage{" +
                 "instrument='" + instrument + '\'' +
                 ", operation='" + operation + '\'' +
-                ", operationLen=" + operationLen +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", id=" + id +
-                ", instrumentLen=" + instrumentLen +
                 '}';
     }
 }
