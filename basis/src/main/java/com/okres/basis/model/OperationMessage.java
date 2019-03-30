@@ -67,7 +67,7 @@ public class OperationMessage extends Message {
 
     }
 
-    private String getMd5() {
+    public String getMd5() {
         return DigestUtils.md5Hex(String.valueOf(id)
                 .concat(instrument)
                 .concat(String.valueOf(quantity).

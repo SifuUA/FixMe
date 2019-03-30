@@ -1,5 +1,7 @@
 package com.okres.basis.util;
 
+import com.okres.basis.model.Message;
+import com.okres.basis.model.TypeMsg;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
@@ -13,6 +15,11 @@ public class Util {
     public static final Properties property = new Properties();
     public static Charset charSet = Charset.forName(Util.property.getProperty("CHARSET"));
 
+
+    private Util() {
+        throw new IllegalAccessError();
+    }
+
     public static void loadProp() {
         try {
             FileInputStream fileInputStream = new FileInputStream("prop.properties");
@@ -21,5 +28,10 @@ public class Util {
             e.printStackTrace();
             logger.error(e);
         }
+    }
+
+    public static boolean isOperation(Message message) {
+        return message.getMsgType().equals(TypeMsg.SELL.toString())
+                || message.getMsgType().equals(TypeMsg.BUY.toString());
     }
 }

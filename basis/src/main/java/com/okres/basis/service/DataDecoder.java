@@ -22,15 +22,12 @@ public class DataDecoder extends ReplayingDecoder<Object> {
         message.setMsgType(msgType);
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             accept(byteBuf, list, message, msgType);
-        } else if (isOperation(message)) {
+        } else if (Util.isOperation(message)) {
             doTransaction(byteBuf, list, message, msgType);
         }
     }
 
-    private boolean isOperation(Message message) {
-        return message.getMsgType().equals(TypeMsg.SELL.toString())
-                || message.getMsgType().equals(TypeMsg.BUY.toString());
-    }
+
 
     private void accept(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
         AcceptMsg acceptMsg = new AcceptMsg();
