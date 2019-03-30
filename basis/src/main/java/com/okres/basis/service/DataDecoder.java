@@ -18,7 +18,7 @@ public class DataDecoder extends ReplayingDecoder<Object> {
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         Message message = new Message();
         String msgType = byteBuf.readCharSequence(byteBuf.readInt(),
-                Charset.forName(Util.property.getProperty("CHARSET"))).toString();
+                Util.charSet).toString();
         message.setMsgType(msgType);
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             accept(byteBuf, list, message, msgType);

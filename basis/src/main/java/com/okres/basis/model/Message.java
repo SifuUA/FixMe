@@ -3,8 +3,6 @@ package com.okres.basis.model;
 public class Message {
     private String checkSum;
     private String msgType;
-    private long checkSumLength;
-    private int msgTypeLength;
     private long msgId;
 
     public Message() {
@@ -13,7 +11,6 @@ public class Message {
     public Message(String msgType, long msgId) {
         this.msgType = msgType;
         this.msgId = msgId;
-        this.msgTypeLength = msgType.length();
     }
 
     public String getCheckSum() {
@@ -21,7 +18,6 @@ public class Message {
     }
 
     public void setCheckSum(String checkSum) {
-        this.checkSumLength = checkSum.length();
         this.checkSum = checkSum;
     }
 
@@ -30,7 +26,6 @@ public class Message {
     }
 
     public void setMsgType(String msgType) {
-        this.msgTypeLength = msgType.length();
         this.msgType = msgType;
     }
 
@@ -42,21 +37,11 @@ public class Message {
         this.msgId = msgId;
     }
 
-    public long getCheckSumLength() {
-        return checkSumLength;
-    }
-
-    public int getMsgTypeLength() {
-        return msgTypeLength;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "checkSum='" + checkSum + '\'' +
                 ", msgType='" + msgType + '\'' +
-                ", checkSumLength=" + checkSumLength +
-                ", msgTypeLength=" + msgTypeLength +
                 ", msgId=" + msgId +
                 '}';
     }

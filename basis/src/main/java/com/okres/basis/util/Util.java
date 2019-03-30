@@ -4,12 +4,14 @@ import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Util {
 
     private static Logger logger = Logger.getLogger(Util.class);
     public static final Properties property = new Properties();
+    public static Charset charSet = Charset.forName(Util.property.getProperty("CHARSET"));
 
     public static void loadProp() {
         try {
