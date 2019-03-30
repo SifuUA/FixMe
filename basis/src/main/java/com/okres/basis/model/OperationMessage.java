@@ -95,6 +95,9 @@ public class OperationMessage extends Message {
         return id;
     }
 
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
 
     @Override
     public String toString() {
