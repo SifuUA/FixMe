@@ -44,7 +44,7 @@ public class Server implements Runnable {
                                     new DataDecoder(),
                                     new CheckConnection(),
                                     new DataEncoder(),
-                                    new ChanellProvider());
+                                    new ChanellProvider(serverPort));
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128).
                     childOption(ChannelOption.SO_KEEPALIVE, true);
