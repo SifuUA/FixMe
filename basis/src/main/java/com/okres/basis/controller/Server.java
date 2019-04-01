@@ -21,7 +21,6 @@ public class Server implements Runnable {
 
     public Server(int serverPort) {
         this.serverPort = serverPort;
-        Util.loadProp();
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Util {
 
     private static Logger logger = Logger.getLogger(Util.class);
     public static final Properties property = new Properties();
-    public static Charset charSet = Charset.forName(Util.property.getProperty("CHARSET"));
+    public static Charset charSet;
 
 
     private Util() {
@@ -22,8 +22,8 @@ public class Util {
 
     public static void loadProp() {
         try {
-            FileInputStream fileInputStream = new FileInputStream("prop.properties");
-            property.load(fileInputStream);
+            property.load(Util.class.getResourceAsStream("/prop.properties"));
+            charSet = Charset.forName(Util.property.getProperty("CHARSET"));
         } catch (IOException e) {
             e.printStackTrace();
             logger.error(e);
