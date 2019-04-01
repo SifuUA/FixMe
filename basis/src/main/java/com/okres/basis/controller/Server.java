@@ -4,7 +4,6 @@ import com.okres.basis.service.ChanellProvider;
 import com.okres.basis.service.DataDecoder;
 import com.okres.basis.service.CheckConnection;
 import com.okres.basis.service.DataEncoder;
-import com.okres.basis.util.Util;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

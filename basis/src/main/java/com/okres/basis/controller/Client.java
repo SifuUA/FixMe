@@ -17,6 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 public class Client implements Runnable {
 
     private String clientName;
+    private EventLoopGroup workerGroup;
 
     public Client(String clientName) {
         this.clientName = clientName;
@@ -24,7 +25,7 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
         try {
             Bootstrap bs = new Bootstrap();
             bs.group(workerGroup)
@@ -36,7 +37,7 @@ public class Client implements Runnable {
                                     new DataDecoder(),
                                     new CheckConnection(),
                                     new DataEncoder(),
-                                    new ClientChanellProvider()
+                                    new ClientChanellProvider(clientName)
                             );
                         }
                     }).option(ChannelOption.SO_KEEPALIVE, true);
@@ -45,9 +46,12 @@ public class Client implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            workerGroup.shutdownGracefully();
+            closeWorkerGroup();
         }
+    }
 
+    public void closeWorkerGroup() {
+        workerGroup.shutdownGracefully();
     }
 
     public int portDef(String client) {

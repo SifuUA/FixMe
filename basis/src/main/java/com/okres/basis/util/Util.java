@@ -1,11 +1,14 @@
 package com.okres.basis.util;
 
+import com.okres.basis.controller.Client;
 import com.okres.basis.model.Message;
+import com.okres.basis.model.OperationMessage;
 import com.okres.basis.model.TypeMsg;
 import org.apache.log4j.Logger;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -34,4 +37,25 @@ public class Util {
         return message.getMsgType().equals(TypeMsg.SELL.toString())
                 || message.getMsgType().equals(TypeMsg.BUY.toString());
     }
+
+    public static boolean isSendOrReject(OperationMessage message) {
+        return message.getOperation().equals(TypeMsg.SEND.toString()) ||
+                message.getOperation().equals(TypeMsg.REJECT.toString());
+    }
+
+    public static void readInputData(Client client) {
+        String str;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+
+            while ((str = bufferedReader.readLine()) != null) {
+                if (str.toLowerCase().equals(Util.property.getProperty("EXIT"))) {
+                    client.closeWorkerGroup();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
