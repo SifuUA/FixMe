@@ -1,6 +1,7 @@
 package com.okres.basis.service;
 
 import com.okres.basis.exception.NotEqualCheckSumExeption;
+import com.okres.basis.exception.BlanckInput;
 import com.okres.basis.model.AcceptMsg;
 import com.okres.basis.model.Message;
 import com.okres.basis.model.OperationMessage;
@@ -9,6 +10,10 @@ import com.okres.basis.util.Util;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
 
@@ -86,5 +91,26 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
         ctx.writeAndFlush(acceptMsg);
     }
 
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        userInputReader();
+    }
 
+    private void userInputReader() throws IOException {
+        if (clientName.equals(Util.property.getProperty("BROKER"))) {
+            System.out.println(Util.property.getProperty("REQUEST"));
+            String str = new BufferedReader(new InputStreamReader(System.in)).readLine();
+            try {
+                if (str.length() == 0) {
+                    throw new BlanckInput();
+                }
+                else if (clientName.equals(Util.property.getProperty("BROKER"))) {
+                    
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                userInputReader();
+            }
+        }
+    }
 }
