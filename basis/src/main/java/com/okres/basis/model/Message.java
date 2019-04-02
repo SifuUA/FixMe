@@ -1,5 +1,6 @@
 package com.okres.basis.model;
 
+
 public class Message {
     private String checkSum;
     private String msgType;
@@ -16,6 +17,8 @@ public class Message {
     public String getCheckSum() {
         return checkSum;
     }
+
+
 
     public void setCheckSum(String checkSum) {
         this.checkSum = checkSum;

@@ -1,5 +1,6 @@
 package com.okres.basis.service;
 
+import com.okres.basis.exception.InvalidInputException;
 import com.okres.basis.exception.NotEqualCheckSumExeption;
 import com.okres.basis.exception.BlanckInput;
 import com.okres.basis.model.AcceptMsg;
@@ -18,7 +19,7 @@ import java.io.InputStreamReader;
 public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
 
     private String clientName;
-    private long id;
+    private long idMain;
 
     public ClientChanellProvider(String clientName) {
         this.clientName = clientName;
@@ -29,9 +30,9 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
         Message message = (Message) msg;
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             AcceptMsg acceptMsg = (AcceptMsg) msg;
-            id = acceptMsg.getId();
-            System.out.println(String.format("%s id: %d",
-                    Util.property.getProperty("CONNECT_TO"), id));
+            idMain = acceptMsg.getId();
+            System.out.println(String.format("%s idMain: %d",
+                    Util.property.getProperty("CONNECT_TO"), idMain));
         } else if (Util.isOperation(message)) {
             OperationMessage opMessage = (OperationMessage) msg;
             try {
@@ -73,10 +74,10 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
                 } else {
                     str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("THANKS"));
                     opMessage.setOperation(TypeMsg.ACCEPT.toString());
-                    System.out.println(str);
-                    opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
-                    ctx.writeAndFlush(opMessage);
                 }
+                System.out.println(str);
+                opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
+                ctx.writeAndFlush(opMessage);
             }
         }
     }
@@ -93,23 +94,63 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        userInputReader();
+        userInputReader(ctx);
     }
 
-    private void userInputReader() throws IOException {
+    private void userInputReader(ChannelHandlerContext ctx) throws IOException {
         if (clientName.equals(Util.property.getProperty("BROKER"))) {
             System.out.println(Util.property.getProperty("REQUEST"));
             String str = new BufferedReader(new InputStreamReader(System.in)).readLine();
             try {
                 if (str.length() == 0) {
                     throw new BlanckInput();
-                }
-                else if (clientName.equals(Util.property.getProperty("BROKER"))) {
-                    
+                } else if (clientName.equals(Util.property.getProperty("BROKER"))) {
+                    String[] inputList = str.split("\\s+");
+                    if (inputList.length != Integer.parseInt(Util.property.getProperty("WORD_COUNT"))) {
+                        throw new InvalidInputException();
+                    }
+                    if (inputList[1].length() != 6) {
+                        throw new InvalidInputException();
+                    }
+                    long id = Long.parseLong(inputList[1]);
+                    String instrument = inputList[2];
+                    int quant = Integer.parseInt(inputList[3]);
+                    int price = Integer.parseInt(inputList[4]);
+                    OperationMessage message;
+                    if (inputList[0].toLowerCase().equals(Util.property.getProperty("SELL"))) {
+                        message =
+                                new OperationMessage
+                                        .Builder()
+                                        .msgType(TypeMsg.SELL.toString())
+                                        .operation("-")
+                                        .msgId(id)
+                                        .id(idMain)
+                                        .instrument(instrument)
+                                        .quantity(quant)
+                                        .price(price)
+                                        .build();
+                    } else if (inputList[0].toLowerCase().equals(Util.property.getProperty("BUY"))) {
+                        message =
+                                new OperationMessage
+                                        .Builder()
+                                        .msgType(TypeMsg.BUY.toString())
+                                        .operation("-")
+                                        .msgId(id)
+                                        .id(idMain)
+                                        .instrument(instrument)
+                                        .quantity(quant)
+                                        .price(price)
+                                        .build();
+                    } else {
+                        throw new InvalidInputException();
+                    }
+                    message.setCheckSum(message.getMd5());
+                    ctx.writeAndFlush(message);
+                    System.out.println(Util.property.getProperty("SEND_REQ"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                userInputReader();
+                userInputReader(ctx);
             }
         }
     }

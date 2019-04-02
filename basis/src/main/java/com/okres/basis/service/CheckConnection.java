@@ -14,6 +14,8 @@ public class CheckConnection extends MessageToByteEncoder<AcceptMsg> {
         byteBuf.writeCharSequence(acceptMsg.getMsgType(),
                 Util.charSet);
         if (acceptMsg.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
+            String md5 = acceptMsg.getMd5();
+            acceptMsg.setCheckSum(md5);
             byteBuf.writeLong(acceptMsg.getId());
             byteBuf.writeInt(acceptMsg.getCheckSum().length());
             byteBuf.writeCharSequence(acceptMsg.getCheckSum(), Util.charSet);

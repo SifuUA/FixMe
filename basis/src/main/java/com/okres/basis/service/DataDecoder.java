@@ -28,27 +28,26 @@ public class DataDecoder extends ReplayingDecoder<Object> {
     }
 
 
-
     private void accept(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
         AcceptMsg acceptMsg = new AcceptMsg();
-        acceptMsg.setCheckSum(DigestUtils.md5Hex(String.valueOf(acceptMsg.getId())).toLowerCase());
+//        acceptMsg.setCheckSum(DigestUtils.md5Hex(String.valueOf(acceptMsg.getId())).toLowerCase());
         acceptMsg.setMsgType(message.getMsgType());
         acceptMsg.setId(byteBuf.readInt());
-        acceptMsg.setCheckSum(msgType);
+        acceptMsg.setCheckSum(byteBuf.readCharSequence(byteBuf.readInt(), Util.charSet).toString());
         list.add(acceptMsg);
     }
 
     private void doTransaction(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
-        OperationMessage operationMsg = new OperationMessage.Builder()
-                .msgType(message.getMsgType())
-                .operation(msgType)
-                .id(byteBuf.readInt())
-                .instrument(msgType)
-                .msgId(byteBuf.readLong())
-                .quantity(byteBuf.readInt())
-                .price(byteBuf.readInt())
-                .checkSum()
-                .build();
+        OperationMessage operationMsg = new OperationMessage.Builder().
+                msgType(message.getMsgType()).
+                operation(msgType).
+                id(byteBuf.readInt()).
+                instrument(msgType).
+                msgId(byteBuf.readLong()).
+                quantity(byteBuf.readInt()).
+                price(byteBuf.readInt()).
+                checkSum().
+                build();
         list.add(operationMsg);
     }
 }

@@ -1,5 +1,7 @@
 package com.okres.basis.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class AcceptMsg extends Message {
     private long id;
 
@@ -17,6 +19,11 @@ public class AcceptMsg extends Message {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getMd5() {
+        String s = DigestUtils.md5Hex(String.valueOf(id));
+        return s;
     }
 
     @Override
