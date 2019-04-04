@@ -55,7 +55,7 @@ public class Client implements Runnable {
     }
 
     public int portDef(String client) {
-        if (client.equals(Util.property.getProperty("MARKET"))) {
+        if (client.toUpperCase().equals(Util.property.getProperty("MARKET"))) {
             return Integer.parseInt(Util.property.getProperty("MARKET_PORT"));
         }
         return Integer.parseInt(Util.property.getProperty("BROKER_PORT"));

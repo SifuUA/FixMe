@@ -6,7 +6,7 @@ import com.okres.basis.util.Util;
 public class Market {
     public static void main(String[] args) {
         Util.loadProp();
-        Client marketClient = new Client(Util.property.getProperty("MARKET_NAME"));
+        Client marketClient = new Client("Market");
         Thread marketThread = new Thread(marketClient);
         marketThread.start();
         try {

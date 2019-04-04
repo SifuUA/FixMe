@@ -40,13 +40,12 @@ public class ChanellProvider extends ChannelInboundHandlerAdapter {
                     if (!opMsg.getMd5().equals(opMsg.getCheckSum())) {
                         throw new NotEqualCheckSumExeption();
                     }
-                    routs.get(opMsg.getId()).writeAndFlush(opMsg);
+                    checkRouts(opMsg).writeAndFlush(opMsg);
                     return;
                 }
                 System.out.println(Util.property.getProperty("CONNECT")
-                        .concat(String.format("%d", opMsg.getId())));
-                routs.get(opMsg.getId())
-                        .channel().writeAndFlush(opMsg);
+                        .concat(String.format(" %d", opMsg.getMsgId())));
+                checkRouts(opMsg).channel().writeAndFlush(opMsg);
             } catch (Exception e) {
                 opMsg.setOperation(TypeMsg.REJECT.toString());
                 opMsg.updateChecksum();
@@ -73,5 +72,9 @@ public class ChanellProvider extends ChannelInboundHandlerAdapter {
             System.out.println(Util.property.getProperty("CONNECT_FROM")
                     .concat(String.format(" %s : %s", server, id)));
         }
+    }
+
+    private ChannelHandlerContext checkRouts(OperationMessage opMsg) {
+        return routs.get(opMsg.getMsgId());
     }
 }
