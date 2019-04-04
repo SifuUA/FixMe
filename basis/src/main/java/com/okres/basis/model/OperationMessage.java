@@ -8,7 +8,7 @@ public class OperationMessage extends Message {
     private String operation;
     private int quantity;
     private int price;
-    private long id;
+    private int id;
 
     public static class Builder {
 
@@ -38,7 +38,7 @@ public class OperationMessage extends Message {
             return this;
         }
 
-        public Builder id(long id) {
+        public Builder id(int id) {
             operationMessage.id = id;
             return this;
         }
@@ -49,7 +49,7 @@ public class OperationMessage extends Message {
         }
 
 
-        public Builder msgId(long msgId) {
+        public Builder msgId(int msgId) {
             operationMessage.setMsgId(msgId);
             return this;
         }
@@ -60,7 +60,7 @@ public class OperationMessage extends Message {
         }
 
         public OperationMessage build() {
-            //operationMessage.setCheckSum(operationMessage.getMd5());
+            operationMessage.setCheckSum(operationMessage.getMd5());
             return operationMessage;
         }
 
@@ -74,6 +74,10 @@ public class OperationMessage extends Message {
                         concat(operation)));
     }
 
+    @Override
+    public void updateChecksum() {
+        setCheckSum(getMd5());
+    }
 
     public String getInstrument() {
         return instrument;
@@ -91,7 +95,7 @@ public class OperationMessage extends Message {
         return price;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

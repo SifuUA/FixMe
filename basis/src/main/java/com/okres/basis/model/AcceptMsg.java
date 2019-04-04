@@ -3,21 +3,27 @@ package com.okres.basis.model;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class AcceptMsg extends Message {
-    private long id;
+    private int id;
 
     public AcceptMsg() {
     }
 
-    public AcceptMsg(String msgType, long msgId, long id) {
+    public AcceptMsg(String msgType, int msgId, int id) {
         super(msgType, msgId);
         this.id = id;
+        setCheckSum(getMd5());
     }
 
-    public long getId() {
+    @Override
+    public void updateChecksum() {
+        setCheckSum(getMd5());
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

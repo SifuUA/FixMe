@@ -4,12 +4,12 @@ package com.okres.basis.model;
 public class Message {
     private String checkSum;
     private String msgType;
-    private long msgId;
+    private int msgId;
 
     public Message() {
     }
 
-    public Message(String msgType, long msgId) {
+    public Message(String msgType, int msgId) {
         this.msgType = msgType;
         this.msgId = msgId;
     }
@@ -18,6 +18,8 @@ public class Message {
         return checkSum;
     }
 
+    public void updateChecksum() {
+    }
 
 
     public void setCheckSum(String checkSum) {
@@ -32,11 +34,11 @@ public class Message {
         this.msgType = msgType;
     }
 
-    public long getMsgId() {
+    public int getMsgId() {
         return msgId;
     }
 
-    public void setMsgId(long msgId) {
+    public void setMsgId(int msgId) {
         this.msgId = msgId;
     }
 

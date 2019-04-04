@@ -20,10 +20,10 @@ public class DataEncoder extends MessageToByteEncoder<OperationMessage> {
     private void buffWritting(OperationMessage message, ByteBuf byteBuf) {
         byteBuf.writeInt(message.getOperation().length());
         byteBuf.writeCharSequence(message.getOperation(), Util.charSet);
-        byteBuf.writeLong(message.getId());
+        byteBuf.writeInt(message.getId());
         byteBuf.writeInt(message.getInstrument().length());
         byteBuf.writeCharSequence(message.getInstrument(), Util.charSet);
-        byteBuf.writeLong(message.getMsgId());
+        byteBuf.writeInt(message.getMsgId());
         byteBuf.writeInt(message.getPrice());
         byteBuf.writeInt(message.getQuantity());
         byteBuf.writeInt(message.getCheckSum().length());

@@ -40,13 +40,13 @@ public class DataDecoder extends ReplayingDecoder<Object> {
     private void doTransaction(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
         OperationMessage operationMsg = new OperationMessage.Builder().
                 msgType(message.getMsgType()).
-                operation(msgType).
+                operation(byteBuf.readCharSequence(byteBuf.readInt(), Util.charSet).toString()).
                 id(byteBuf.readInt()).
-                instrument(msgType).
-                msgId(byteBuf.readLong()).
+                instrument(byteBuf.readCharSequence(byteBuf.readInt(), Util.charSet).toString()).
+                msgId(byteBuf.readInt()).
                 quantity(byteBuf.readInt()).
                 price(byteBuf.readInt()).
-                checkSum().
+//                checkSum(). e7a4f57d9287ee994f02fb19241d76f1
                 build();
         list.add(operationMsg);
     }

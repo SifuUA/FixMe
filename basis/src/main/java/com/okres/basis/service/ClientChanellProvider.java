@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
 
     private String clientName;
-    private long idMain;
+    private int idMain;
 
     public ClientChanellProvider(String clientName) {
         this.clientName = clientName;
@@ -31,8 +31,8 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
         if (message.getMsgType().equals(TypeMsg.ACCEPT.toString())) {
             AcceptMsg acceptMsg = (AcceptMsg) msg;
             idMain = acceptMsg.getId();
-            System.out.println(String.format("%s idMain: %d",
-                    Util.property.getProperty("CONNECT_TO"), idMain));
+            System.out.println(String.format("%s\n%s id: %d",
+                    Util.property.getProperty("CONNECT_IS"), this.clientName, idMain));
         } else if (Util.isOperation(message)) {
             OperationMessage opMessage = (OperationMessage) msg;
             try {
@@ -84,7 +84,7 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        long default_id = Integer.parseInt(Util.property.getProperty("DEFAULT_ID"));
+        int default_id = Integer.parseInt(Util.property.getProperty("DEFAULT_ID"));
 
         System.out.println(String.format("%s %s",
                 clientName, Util.property.getProperty("CONNECT_TO")));
@@ -98,13 +98,13 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
     }
 
     private void userInputReader(ChannelHandlerContext ctx) throws IOException {
-        if (clientName.equals(Util.property.getProperty("BROKER"))) {
+        if (clientName.toUpperCase().equals(Util.property.getProperty("BROKER"))) {
             System.out.println(Util.property.getProperty("REQUEST"));
             String str = new BufferedReader(new InputStreamReader(System.in)).readLine();
             try {
                 if (str.length() == 0) {
                     throw new BlanckInput();
-                } else if (clientName.equals(Util.property.getProperty("BROKER"))) {
+                } else if (clientName.toUpperCase().equals(Util.property.getProperty("BROKER"))) {
                     String[] inputList = str.split("\\s+");
                     if (inputList.length != Integer.parseInt(Util.property.getProperty("WORD_COUNT"))) {
                         throw new InvalidInputException();
@@ -112,7 +112,7 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
                     if (inputList[1].length() != 6) {
                         throw new InvalidInputException();
                     }
-                    long id = Long.parseLong(inputList[1]);
+                    int id = Integer.parseInt(inputList[1]);
                     String instrument = inputList[2];
                     int quant = Integer.parseInt(inputList[3]);
                     int price = Integer.parseInt(inputList[4]);
@@ -144,7 +144,7 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
                     } else {
                         throw new InvalidInputException();
                     }
-                    message.setCheckSum(message.getMd5());
+   //                 message.setCheckSum(message.getMd5());
                     ctx.writeAndFlush(message);
                     System.out.println(Util.property.getProperty("SEND_REQ"));
                 }

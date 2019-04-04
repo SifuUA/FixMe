@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class ChanellProvider extends ChannelInboundHandlerAdapter {
 
-    private static HashMap<Long, ChannelHandlerContext> routs = new HashMap<>();
+    private static HashMap<Integer, ChannelHandlerContext> routs = new HashMap<>();
     private static Logger logger = Logger.getLogger(ChanellProvider.class);
     private int serverPort;
 
@@ -49,7 +49,7 @@ public class ChanellProvider extends ChannelInboundHandlerAdapter {
                         .channel().writeAndFlush(opMsg);
             } catch (Exception e) {
                 opMsg.setOperation(TypeMsg.REJECT.toString());
-                opMsg.setCheckSum(opMsg.getMd5());
+                opMsg.updateChecksum();
                 ctx.writeAndFlush(opMsg);
                 e.printStackTrace();
                 logger.error(e);
@@ -66,11 +66,12 @@ public class ChanellProvider extends ChannelInboundHandlerAdapter {
                 server = Util.property.getProperty("MARKET");
             }
             acceptMsg.setId(Integer.parseInt(id));
-            acceptMsg.setCheckSum(DigestUtils.md5Hex(id).toLowerCase());
+            acceptMsg.updateChecksum();
+//            acceptMsg.setCheckSum(DigestUtils.md5Hex(id).toLowerCase());
             ctx.writeAndFlush(acceptMsg);
             routs.put(acceptMsg.getId(), ctx);
             System.out.println(Util.property.getProperty("CONNECT_FROM")
-                    .concat(String.format("%s : %s", server, id)));
+                    .concat(String.format(" %s : %s", server, id)));
         }
     }
 }

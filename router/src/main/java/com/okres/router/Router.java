@@ -3,15 +3,14 @@ package com.okres.router;
 
 import com.okres.basis.controller.*;
 import com.okres.basis.util.*;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
-    private static Logger logger = Logger.getLogger(Main.class);
+public class Router {
+    private static Logger logger = Logger.getLogger(Router.class);
 
     public static void main(String[] args) {
 //        BasicConfigurator.configure();
