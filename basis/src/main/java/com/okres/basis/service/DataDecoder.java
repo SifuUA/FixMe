@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 public class DataDecoder extends ReplayingDecoder<Object> {
-    @Override
+    @Override//a1bfb92344ba5004f9251cc68f645850
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         Message message = new Message();
         String msgType = byteBuf.readCharSequence(byteBuf.readInt(),
@@ -26,7 +26,6 @@ public class DataDecoder extends ReplayingDecoder<Object> {
             doTransaction(byteBuf, list, message, msgType);
         }
     }
-
 
     private void accept(ByteBuf byteBuf, List<Object> list, Message message, String msgType) {
         AcceptMsg acceptMsg = new AcceptMsg();

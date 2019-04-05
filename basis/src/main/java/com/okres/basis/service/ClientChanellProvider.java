@@ -53,30 +53,32 @@ public class ClientChanellProvider extends ChannelInboundHandlerAdapter {
                 String str;
                 int num = (int) (Math.random() * 2);
                 if (num > 0) {
-                    str = String.format("%s ! %s", TypeMsg.ACCEPT, Util.property.getProperty("THANKS"));
-                    opMessage.setOperation(TypeMsg.ACCEPT.toString());
+                    str = String.format("%s ! %s", TypeMsg.SEND, Util.property.getProperty("THANKS"));
+                    opMessage.setOperation(TypeMsg.SEND.toString());
                 } else {
                     str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("NOPE"));
                     opMessage.setOperation(TypeMsg.REJECT.toString());
                 }
                 System.out.println(str);
-                opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
+                opMessage.updateChecksum();
+                //opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
                 ctx.writeAndFlush(opMessage);
             } else {
                 String str;
                 int num = (int) (Math.random() * 3);
                 if (num == 0) {
-                    str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("WRONG_INSTRUM"));
+                    str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("WRONG_INSTRIM"));
                     opMessage.setOperation(TypeMsg.REJECT.toString());
                 } else if (num == 1) {
                     str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("NO_ENOUGH"));
                     opMessage.setOperation(TypeMsg.REJECT.toString());
                 } else {
-                    str = String.format("%s ! %s", TypeMsg.REJECT, Util.property.getProperty("THANKS"));
-                    opMessage.setOperation(TypeMsg.ACCEPT.toString());
+                    str = String.format("%s ! %s", TypeMsg.SEND, Util.property.getProperty("THANKS"));
+                    opMessage.setOperation(TypeMsg.SEND.toString());
                 }
                 System.out.println(str);
-                opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
+                //opMessage.setCheckSum(DigestUtils.md5Hex(opMessage.getMd5()));
+                opMessage.updateChecksum();
                 ctx.writeAndFlush(opMessage);
             }
         }

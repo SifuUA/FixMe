@@ -36,6 +36,7 @@ public class ChanellProvider extends ChannelInboundHandlerAdapter {
                 if (!routs.containsKey(opMsg.getMsgId())) {
                     throw new NotFindInRoutsException();
                 }
+
                 if (Util.isSendOrReject(opMsg)) {
                     if (!opMsg.getMd5().equals(opMsg.getCheckSum())) {
                         throw new NotEqualCheckSumExeption();
